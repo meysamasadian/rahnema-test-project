@@ -1,0 +1,44 @@
+buildscript {
+    repositories { mavenCentral() }
+}
+
+plugins { id "io.spring.dependency-management" version "1.0.0.RELEASE" }
+
+ext { springBootVersion = '1.5.8.RELEASE' }
+
+apply plugin: 'java'
+
+jar {
+    baseName = 'rahnema-module-merchant'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.7.9'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.9'
+    compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.26'
+    compile group: 'org.glassfish.jersey.media', name: 'jersey-media-json-jackson', version: '2.26'
+    compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.9.0'
+    compile group: 'org.springframework', name: 'spring-context-support', version: '4.1.0.RELEASE'
+    compile group: 'org.glassfish.jersey', name: 'jersey-bom', version: '2.26', ext: 'pom'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-client', version: '3.1.4.Final'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.13'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jaxrs', version: '3.1.4.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jaxb-provider', version: '3.1.4.Final'
+    compile group: 'org.jboss.resteasy', name: 'resteasy-jackson2-provider', version: '3.1.4.Final'
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+}
+
