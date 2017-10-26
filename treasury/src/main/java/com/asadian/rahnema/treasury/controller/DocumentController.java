@@ -16,6 +16,7 @@ import javax.xml.ws.Response;
 /**
  * Created by rahnema on 9/6/2017.
  */
+@SuppressWarnings("unchecked")
 @RestController
 @RequestMapping("/document")
 public class DocumentController {

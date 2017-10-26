@@ -8,6 +8,7 @@ import com.asadian.rahnema.gateway.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 /**
@@ -21,43 +22,43 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST )
     @ResponseBody
-    public String register(@RequestBody AccountDto accountDto) {
+    public Response register(@RequestBody AccountDto accountDto) {
         try {
             accountService.register(accountDto);
-            return accountDto.getFullName() + " was registered successfully!";
+            return Response.ok().entity(accountDto.getFullName() + " was registered successfully!").build();
         } catch (BusinessException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
 
     }
 
     @RequestMapping(value = "/login/{pan}", method = RequestMethod.POST )
     @ResponseBody
-    public String login(@PathVariable String pan) {
+    public Response login(@PathVariable String pan) {
         try {
-            return accountService.login(pan);
+            return Response.ok().entity(accountService.login(pan)).build();
         } catch (BusinessException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @RequestMapping(value = "/transfer", method = RequestMethod.POST )
     @ResponseBody
-    public String transfer(@RequestBody TransactionDto dto) {
+    public Response transfer(@RequestBody TransactionDto dto) {
         try {
             accountService.transfer(dto);
-            return "money was transfer successfully!";
+            return Response.ok().entity("money was transfer successfully!").build();
         } catch (BusinessException e) {
             e.printStackTrace();
-            return e.getMessage();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
 
     @RequestMapping(value = "/list/{phone}", method = RequestMethod.GET )
     @ResponseBody
-    public List<TransactionDto> transfer(@PathVariable String phone) {
+    public List<TransactionDto> transactions(@PathVariable String phone) {
         return accountService.list(phone);
     }
 }

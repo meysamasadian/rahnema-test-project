@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway.iml" group="gateway" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/gateway.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/gateway.iml" group="gateway" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/gateway_main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/gateway_main.iml" group="gateway" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/gateway_test.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/gateway_test.iml" group="gateway" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant.iml" group="merchant" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant.iml" group="merchant" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant_main.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant_main.iml" group="merchant" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant_test.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant_test.iml" group="merchant" />
-      <module fileurl="file://$PROJECT_DIR$/rahnema-test-project.iml" filepath="$PROJECT_DIR$/rahnema-test-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/rahnema-test-project.iml" filepath="$PROJECT_DIR$/.idea/modules/rahnema-test-project.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/treasury/treasury.iml" filepath="$PROJECT_DIR$/.idea/modules/treasury/treasury.iml" group="treasury" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/treasury/treasury_main.iml" filepath="$PROJECT_DIR$/.idea/modules/treasury/treasury_main.iml" group="treasury" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/treasury/treasury_test.iml" filepath="$PROJECT_DIR$/.idea/modules/treasury/treasury_test.iml" group="treasury" />
