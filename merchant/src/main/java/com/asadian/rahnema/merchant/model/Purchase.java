@@ -1,11 +1,14 @@
 package com.asadian.rahnema.merchant.model;
 
+import org.springframework.data.annotation.Id;
+
 import java.math.BigDecimal;
 
 /**
  * Created by Nemesis on 25/10/2017.
  */
 public class Purchase {
+    @Id
     private String id;
     private String shop;
     private String purchaser;

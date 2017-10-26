@@ -2,6 +2,7 @@ package com.asadian.rahnema.treasury.service;
 
 import com.asadian.rahnema.treasury.dto.DocumentDto;
 import com.asadian.rahnema.treasury.exception.BusinessException;
+import com.asadian.rahnema.treasury.message.MessageFactory;
 import com.asadian.rahnema.treasury.model.Account;
 import com.asadian.rahnema.treasury.model.Document;
 import com.asadian.rahnema.treasury.repositories.AccountRepo;
@@ -29,10 +30,16 @@ public class DocumentService {
 
     public String issueDocument(DocumentDto dto) throws BusinessException {
         Account source = accountRepo.findByPan(dto.getSource());
+        if (source == null) {
+            throw new BusinessException(MessageFactory.message(BusinessException.ACCOUNT_NOT_FOUND, dto.getSource()));
+        }
         Account dest = accountRepo.findByPan(dto.getDest());
+        if (dest == null) {
+            throw new BusinessException(MessageFactory.message(BusinessException.ACCOUNT_NOT_FOUND, dto.getDest()));
+        }
         BigDecimal amount = dto.getAmount();
         if (amount.compareTo(source.getBalance()) > 0) {
-            throw new BusinessException(BusinessException.NOT_ENOUGH_MONEY);
+            throw new BusinessException(MessageFactory.message(BusinessException.NOT_ENOUGH_MONEY, source.getPan()));
         }
 
         accountService.decreaseBalance(accountService.present(source),amount);

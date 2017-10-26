@@ -1,10 +1,13 @@
 package com.asadian.rahnema.merchant.service;
 
+import com.asadian.rahnema.merchant.dto.LoginDto;
 import com.asadian.rahnema.merchant.dto.ProductDto;
 import com.asadian.rahnema.merchant.dto.PurchaseDto;
 import com.asadian.rahnema.merchant.dto.ShopDto;
+import com.asadian.rahnema.merchant.dto.gateway.GatewayAccountDto;
 import com.asadian.rahnema.merchant.dto.gateway.GatewayTransactionDto;
 import com.asadian.rahnema.merchant.exception.BusinessException;
+import com.asadian.rahnema.merchant.message.Message;
 import com.asadian.rahnema.merchant.model.Purchase;
 import com.asadian.rahnema.merchant.model.Shop;
 import com.asadian.rahnema.merchant.repository.PurchaseRepository;
@@ -13,6 +16,7 @@ import com.asadian.rahnema.merchant.service.gateway.GatewayServiceConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +50,27 @@ public class MerchantService {
         return present(shopRepository.findByPan(pan));
     }
 
+    public String register(ShopDto dto) throws BusinessException {
+        Shop shop = new Shop();
+        shop.setLogo(dto.getLogo());
+        shop.setName(dto.getName());
+        shop.setPan(dto.getPan());
+        shop.setProducts(dto.getProducts().stream().map(productDto -> {
+            Shop.Product product = new Shop.Product();
+            product.setName(productDto.getName());
+            product.setCode(productDto.getCode());
+            product.setPrice(productDto.getPrice());
+            return product;
+        }).collect(Collectors.toList()));
+        GatewayAccountDto accountDto = new GatewayAccountDto();
+        accountDto.setFullName(dto.getName());
+        accountDto.setPhone(dto.getPan());
+        accountDto.setInitAmount(BigDecimal.ZERO);
+        connector.register(accountDto);
+        shopRepository.save(shop);
+        return Message.SHOP_ACCOUNT_WAS_CREATED_SUCCESSFULLY;
+    }
+
     public Map<String,Object> loadProductInfo(String pan, String code) {
         Map<String,Object> result = new HashMap<>();
         Shop shop = shopRepository.findByPan(pan);
@@ -62,10 +87,10 @@ public class MerchantService {
     }
 
 
-    public Map<String,Object> processLogin(String purchaser, String pan, String code) throws BusinessException {
-        Map<String,Object> result = loadProductInfo(pan, code);
-        result.put(PURCHASER_KEY, purchaser);
-        result.put(OTP_KEY, connector.login(pan));
+    public Map<String,Object> processLogin(LoginDto dto) throws BusinessException {
+        Map<String,Object> result = loadProductInfo(dto.getShop(), dto.getProductCode());
+        result.put(PURCHASER_KEY, dto.getPurchaser());
+        result.put(OTP_KEY, connector.login(dto.getPurchaser()));
         return result;
     }
 
@@ -83,7 +108,7 @@ public class MerchantService {
         purchase.setShop(purchaseDto.getShopPan());
         purchase.setPurchaser(purchaseDto.getPurchaserPan());
         purchaseRepository.save(purchase);
-        return purchaseDto.getPurchaserPan() + " purchased Successfully";
+        return Message.PURCHASE_SUCCESSFULLY;
     }
 
     private ShopDto present(Shop shop) {

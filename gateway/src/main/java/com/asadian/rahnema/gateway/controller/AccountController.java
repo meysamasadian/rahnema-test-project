@@ -2,11 +2,19 @@ package com.asadian.rahnema.gateway.controller;
 
 
 import com.asadian.rahnema.gateway.dto.AccountDto;
+import com.asadian.rahnema.gateway.dto.GatewayResultContainer;
+import com.asadian.rahnema.gateway.dto.GatewayResultFactory;
 import com.asadian.rahnema.gateway.dto.TransactionDto;
+import com.asadian.rahnema.gateway.dto.treasury.TreasuryResultContainer;
 import com.asadian.rahnema.gateway.exception.BusinessException;
+import com.asadian.rahnema.gateway.message.Message;
+import com.asadian.rahnema.gateway.message.MessageFactory;
 import com.asadian.rahnema.gateway.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -22,43 +30,47 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST )
     @ResponseBody
-    public Response register(@RequestBody AccountDto accountDto) {
+    public Object register(@RequestBody AccountDto accountDto) {
         try {
-            accountService.register(accountDto);
-            return Response.ok().entity(accountDto.getFullName() + " was registered successfully!").build();
+            String message = accountService.register(accountDto);
+            return GatewayResultFactory.getResult(accountDto, message);
         } catch (BusinessException e) {
             e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return new ResponseEntity<>(GatewayResultFactory.getResult("",
+                    e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
         }
-
     }
 
     @RequestMapping(value = "/login/{pan}", method = RequestMethod.POST )
     @ResponseBody
-    public Response login(@PathVariable String pan) {
+    public Object login(@PathVariable String pan) {
         try {
-            return Response.ok().entity(accountService.login(pan)).build();
+            final TreasuryResultContainer login = accountService.login(pan);
+            return GatewayResultFactory.getResult(login.getData(), login.getMessage());
         } catch (BusinessException e) {
             e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return new ResponseEntity<>(GatewayResultFactory.getResult("", e.getMessage()),
+                    HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @RequestMapping(value = "/transfer", method = RequestMethod.POST )
     @ResponseBody
-    public Response transfer(@RequestBody TransactionDto dto) {
+    public Object transfer(@RequestBody TransactionDto dto) {
         try {
-            accountService.transfer(dto);
-            return Response.ok().entity("money was transfer successfully!").build();
+            TransactionDto result = accountService.transfer(dto);
+            return GatewayResultFactory.getResult(result, MessageFactory.message(Message.TRANSACTION_GENERATED,
+                    String.valueOf(dto.getAmount()), dto.getSource(), dto.getDest()));
         } catch (BusinessException e) {
             e.printStackTrace();
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+            return new ResponseEntity<>(GatewayResultFactory.getResult("", e.getMessage()),
+                    HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @RequestMapping(value = "/list/{phone}", method = RequestMethod.GET )
     @ResponseBody
-    public List<TransactionDto> transactions(@PathVariable String phone) {
-        return accountService.list(phone);
+    public GatewayResultContainer transactions(@PathVariable String phone) {
+        return GatewayResultFactory.getResult(accountService.list(phone), Message.SUCCESSFULLY_OPERATION);
     }
 }

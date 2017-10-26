@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class Transaction {
     @Id
-    private long id;
+    private String id;
     private BigDecimal amount;
     private String date;
     private String partOneRefId;
@@ -43,11 +43,11 @@ public class Transaction {
         this.partTwoRefId = partTwoRefId;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,6 +1,8 @@
 package com.asadian.rahnema.merchant.service.gateway;
 
 
+import com.asadian.rahnema.merchant.dto.gateway.GatewayAccountDto;
+import com.asadian.rahnema.merchant.dto.gateway.GatewayResultContainer;
 import com.asadian.rahnema.merchant.dto.gateway.GatewayTransactionDto;
 import com.asadian.rahnema.merchant.exception.BusinessException;
 import org.springframework.stereotype.Service;
@@ -12,18 +14,24 @@ import java.util.List;
  */
 @Service
 public class GatewayServiceConnectorImpl implements GatewayServiceConnector {
+
     @Override
-    public String login(String phoneNumber) throws BusinessException {
-        return (String) ConnectionUtils.requestPost(Path.LOGIN, String.class, phoneNumber, null);
+    public GatewayResultContainer register(GatewayAccountDto accountDto) throws BusinessException {
+        return (GatewayResultContainer) ConnectionUtils.requestPost(Path.REGISTER, GatewayResultContainer.class, null, accountDto);
     }
 
     @Override
-    public String transfer(GatewayTransactionDto dto) throws BusinessException {
-        return (String) ConnectionUtils.transact(Path.TRANSFER, String.class, null, dto);
+    public GatewayResultContainer login(String phoneNumber) throws BusinessException {
+        return (GatewayResultContainer) ConnectionUtils.requestPost(Path.LOGIN, GatewayResultContainer.class, phoneNumber, null);
     }
 
     @Override
-    public List<GatewayTransactionDto> transactions(String pan) throws BusinessException {
-        return (List<GatewayTransactionDto>) ConnectionUtils.requestGet(Path.LIST, List.class ,pan);
+    public GatewayResultContainer transfer(GatewayTransactionDto dto) throws BusinessException {
+        return (GatewayResultContainer) ConnectionUtils.transact(Path.TRANSFER, GatewayResultContainer.class, null, dto);
+    }
+
+    @Override
+    public GatewayResultContainer transactions(String pan) throws BusinessException {
+        return (GatewayResultContainer) ConnectionUtils.requestGet(Path.LIST, GatewayResultContainer.class ,pan);
     }
 }

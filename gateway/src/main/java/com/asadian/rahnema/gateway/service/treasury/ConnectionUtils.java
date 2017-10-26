@@ -1,5 +1,6 @@
 package com.asadian.rahnema.gateway.service.treasury;
 
+import com.asadian.rahnema.gateway.dto.treasury.TreasuryResultContainer;
 import com.asadian.rahnema.gateway.exception.BusinessException;
 import org.glassfish.jersey.client.ClientProperties;
 
@@ -30,12 +31,12 @@ public class ConnectionUtils {
         return connect(path, entity, pathVariable, clazz);
     }
 
-    public static Object transact(Path path, Class clazz ,String pathVariable ,Object requestData)  {
+    public static Object transact(Path path, Class clazz ,String pathVariable ,Object requestData) throws BusinessException {
         Entity entity = Entity.entity(requestData, MediaType.APPLICATION_JSON);
         return transact(path, entity, pathVariable, clazz);
     }
 
-    private static<T> T transact(Path path, Entity entity, String pathVariable, Class<T> t)  {
+    private static<T> T transact(Path path, Entity entity, String pathVariable, Class<T> t) throws BusinessException {
         Client client = ClientBuilder.newClient();
         client.property(ClientProperties.CONNECT_TIMEOUT,
                 CONNECT_TIMEOUT);
@@ -46,6 +47,10 @@ public class ConnectionUtils {
                 accept(MediaType.APPLICATION_JSON).
                 post(entity) : target.request().
                 post(null);
+        if (response.getStatus() != 200) {
+            TreasuryResultContainer container = (TreasuryResultContainer)response.readEntity(t);
+            throw new BusinessException(container.getMessage());
+        }
         return response.readEntity(t);
     }
 
@@ -59,7 +64,8 @@ public class ConnectionUtils {
                 post(entity) : target.request().
                 post(null);
         if (response.getStatus() != 200) {
-            throw new BusinessException(BusinessException.TREASURY_PROCESS_NOT_COMPLETE);
+            TreasuryResultContainer container = (TreasuryResultContainer)response.readEntity(t);
+            throw new BusinessException(container.getMessage());
         }
         return response.readEntity(t);
     }

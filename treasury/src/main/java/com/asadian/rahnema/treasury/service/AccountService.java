@@ -4,12 +4,11 @@ package com.asadian.rahnema.treasury.service;
 import com.asadian.rahnema.treasury.dto.AccountDto;
 import com.asadian.rahnema.treasury.dto.OtpContainer;
 import com.asadian.rahnema.treasury.exception.BusinessException;
+import com.asadian.rahnema.treasury.message.MessageFactory;
 import com.asadian.rahnema.treasury.model.Account;
 import com.asadian.rahnema.treasury.repositories.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,17 +41,21 @@ public class AccountService {
         }
     }
 
-    public String login(String pan) {
-        Cache.ValueWrapper wrapper = otpCache.get(pan);
+    public String login(String pan) throws BusinessException {
+        Account account = accountRepo.findByPan(pan);
+        if (account != null) {
+            Cache.ValueWrapper wrapper = otpCache.get(pan);
 
-        OtpContainer container =  wrapper != null ? (OtpContainer)wrapper.get() : null;
-        if (container != null) {
-            if (container.getExpire() > System.currentTimeMillis()) {
-                return container.getCode();
+            OtpContainer container = wrapper != null ? (OtpContainer) wrapper.get() : null;
+            if (container != null) {
+                if (container.getExpire() > System.currentTimeMillis()) {
+                    return container.getCode();
+                }
             }
+            otpCache.put(pan, generateOtp());
+            return ((OtpContainer) otpCache.get(pan).get()).getCode();
         }
-        otpCache.put(pan,generateOtp());
-        return ((OtpContainer) otpCache.get(pan).get()).getCode();
+        throw new BusinessException(MessageFactory.message(BusinessException.ACCOUNT_NOT_FOUND, pan));
     }
 
 
@@ -68,12 +71,22 @@ public class AccountService {
                 System.currentTimeMillis() + properties.getExpireDuration());
     }
 
-    public void register(AccountDto dto) {
+    public AccountDto register(AccountDto dto) throws BusinessException {
+        Account account = accountRepo.findByPan(dto.getPan());
+        if (account != null) {
+            throw new BusinessException(BusinessException.ACCOUNT_IS_DUPLICATE);
+        }
         accountRepo.save(convert(dto));
+        return present(accountRepo.findByPan(dto.getPan()));
     }
 
-    public AccountDto load(String pan) {
-        return present(accountRepo.findByPan(pan));
+    public AccountDto load(String pan) throws BusinessException {
+        Account account = accountRepo.findByPan(pan);
+        if (account != null) {
+            return present(account);
+        } else {
+            throw new BusinessException(MessageFactory.message(BusinessException.ACCOUNT_NOT_FOUND, pan));
+        }
     }
 
 

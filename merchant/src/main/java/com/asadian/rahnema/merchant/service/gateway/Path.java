@@ -4,6 +4,7 @@ package com.asadian.rahnema.merchant.service.gateway;
  * Created by rahnema on 9/6/2017.
  */
 public enum Path {
+    REGISTER("/account/register/"),
     LOGIN("/account/login/"),
     TRANSFER("/account/transfer/"),
     LIST("/account/list/"),;

@@ -11,6 +11,15 @@ public class TransactionDto {
     private String source;
     private String dest;
     private String otp;
+    private String tx;
+
+    public String getTx() {
+        return tx;
+    }
+
+    public void setTx(String tx) {
+        this.tx = tx;
+    }
 
     public String getOtp() {
         return otp;

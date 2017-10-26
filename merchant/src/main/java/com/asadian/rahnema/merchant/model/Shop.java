@@ -56,7 +56,7 @@ public class Shop {
         this.products = products;
     }
 
-    public class Product {
+    public static class Product {
         private String code;
         private String name;
         private BigDecimal price;

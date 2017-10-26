@@ -1,6 +1,7 @@
 package com.asadian.rahnema.merchant.service.gateway;
 
 
+import com.asadian.rahnema.merchant.dto.gateway.GatewayResultContainer;
 import com.asadian.rahnema.merchant.exception.BusinessException;
 import org.glassfish.jersey.client.ClientProperties;
 
@@ -48,8 +49,9 @@ public class ConnectionUtils {
                 accept(MediaType.APPLICATION_JSON).
                 post(entity) : target.request().
                 post(null);
-        if (!String.valueOf(response.getStatus()).startsWith("2")) {
-            throw new BusinessException((String)response.readEntity(t));
+        if (response.getStatus() != 200) {
+            GatewayResultContainer container = (GatewayResultContainer)response.readEntity(t);
+            throw new BusinessException(container.getMessage());
         }
         return response.readEntity(t);
     }
@@ -58,13 +60,14 @@ public class ConnectionUtils {
     private static<T> T connectPost(Path path, Entity entity, String pathVariable, Class<T> t) throws BusinessException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(urlCreator(path,pathVariable));
-        Response response = null;
+        Response response;
         response = entity != null ? target.request().
                 accept(MediaType.APPLICATION_JSON).
                 post(entity) : target.request().
                 post(null);
         if (response.getStatus() != 200) {
-            throw new BusinessException(BusinessException.GATEWAY_PROCESS_NOT_COMPLETE);
+            GatewayResultContainer container = (GatewayResultContainer)response.readEntity(t);
+            throw new BusinessException(container.getMessage());
         }
         return response.readEntity(t);
     }
@@ -72,11 +75,12 @@ public class ConnectionUtils {
     private static<T> T connectGet(Path path, String pathVariable, Class<T> t) throws BusinessException {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(urlCreator(path,pathVariable));
-        Response response = null;
+        Response response;
         response = target.request().
                 accept(MediaType.APPLICATION_JSON).get();
         if (response.getStatus() != 200) {
-            throw new BusinessException(BusinessException.GATEWAY_PROCESS_NOT_COMPLETE);
+            GatewayResultContainer container = (GatewayResultContainer)response.readEntity(t);
+            throw new BusinessException(container.getMessage());
         }
         return response.readEntity(t);
     }
