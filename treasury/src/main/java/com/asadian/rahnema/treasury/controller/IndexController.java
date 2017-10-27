@@ -9,4 +9,9 @@ public class IndexController {
     public String welcome() {
         return "welcome to treasury app!";
     }
+
+    @RequestMapping("/hi")
+    public String welcome1() {
+        return "{\"message\":\"welcome to treasury app!\"}";
+    }
 }

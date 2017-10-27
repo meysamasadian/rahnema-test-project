@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Gradle : rahnema-test-project : merchant-ui.war">
+    <output-path>$PROJECT_DIR$/merchant-ui/build/libs</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$" />
+    </properties>
+    <root id="archive" name="merchant-ui.war">
+      <element id="artifact" artifact-name="Gradle : rahnema-test-project : merchant-ui.war (exploded)" />
+    </root>
+  </artifact>
+</component>

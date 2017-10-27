@@ -6,6 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/gateway_main.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/gateway_main.iml" group="gateway" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/gateway/gateway_test.iml" filepath="$PROJECT_DIR$/.idea/modules/gateway/gateway_test.iml" group="gateway" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant.iml" group="merchant" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui.iml" group="merchant-ui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui_main.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui_main.iml" group="merchant-ui" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui_test.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant-ui/merchant-ui_test.iml" group="merchant-ui" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant_main.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant_main.iml" group="merchant" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/merchant/merchant_test.iml" filepath="$PROJECT_DIR$/.idea/modules/merchant/merchant_test.iml" group="merchant" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/rahnema-test-project.iml" filepath="$PROJECT_DIR$/.idea/modules/rahnema-test-project.iml" />

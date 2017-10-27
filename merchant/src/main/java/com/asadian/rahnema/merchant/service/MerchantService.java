@@ -115,7 +115,7 @@ public class MerchantService {
         ShopDto dto = new ShopDto();
         dto.setName(shop.getName());
         dto.setPan(shop.getPan());
-        dto.setPan(shop.getLogo());
+        dto.setLogo(shop.getLogo());
         dto.setProducts(shop.getProducts().stream().map(this::present).collect(Collectors.toList()));
         return dto;
     }

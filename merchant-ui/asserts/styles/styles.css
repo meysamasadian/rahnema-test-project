@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'IRANSansWeb';
+    src: local('IRANSansWeb'), url(../fonts/woff/IRANSansWeb.woff) format('woff');
+}
+p,h1,h2,h3,h4,h5,span {
+    font-family: 'IRANSansWeb';
+}
+
+#hexagon{
+    position: relative;
+    height:100px;
+    width:50%;
+    color: white;
+    background: green;
+    padding-bottom: 15%;
+    overflow:hidden;
+    background-clip: content-box;
+}
+
+#hexagon::after {
+    content: "";
+    position: absolute;
+    top:100px;
+    left: 0;
+    background-color:green;
+    padding-bottom: 50%;
+    width: 57.7%;
+    transform-origin: 0 0;
+    transform: rotate(-30deg) skewX(30deg);
+}
+
+
+.editor {
+    width: 560px;
+    margin: 10px auto;
+}
+
+.editor .row {
+    margin: 10px 0;
+}
+
+.editor .radio-item {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.editor .radio-item input {
+    margin-right: 5px;
+}
+
+.editor .source {
+    display: block;
+    margin: 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    width: 100%;
+    height: 130px;
+    box-sizing: border-box;
+    font-family: 'Inconsolata', 'Menlo', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 18px;
+    resize: none;
+    white-space: pre;
+    word-wrap: normal;
+}
+
+.editor .react-rte  {
+    min-height: 310px;
+}

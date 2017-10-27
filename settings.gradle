@@ -3,4 +3,5 @@ rootProject.name = 'rahnema-test-project'
 include 'treasury'
 include 'gateway'
 include 'merchant'
+include 'merchant-ui'
 
