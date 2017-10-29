@@ -5,8 +5,8 @@
       <configuration />
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output-test url="file://$MODULE_DIR$/../../../treasury/build/classes/test" />
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output-test url="file://$MODULE_DIR$/../../../treasury/out/test/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../treasury/src/test">
       <sourceFolder url="file://$MODULE_DIR$/../../../treasury/src/test/java" isTestSource="true" />

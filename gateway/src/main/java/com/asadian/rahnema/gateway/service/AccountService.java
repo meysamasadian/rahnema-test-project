@@ -1,7 +1,6 @@
 package com.asadian.rahnema.gateway.service;
 
 import com.asadian.rahnema.gateway.dto.AccountDto;
-import com.asadian.rahnema.gateway.dto.GatewayResultContainer;
 import com.asadian.rahnema.gateway.dto.TransactionDto;
 import com.asadian.rahnema.gateway.dto.treasury.TreasuryAccountDto;
 import com.asadian.rahnema.gateway.dto.treasury.TreasuryDocumentDto;
@@ -11,7 +10,11 @@ import com.asadian.rahnema.gateway.model.Account;
 import com.asadian.rahnema.gateway.model.Transaction;
 import com.asadian.rahnema.gateway.repository.AccountRepository;
 import com.asadian.rahnema.gateway.repository.TransactionRepository;
-import com.asadian.rahnema.gateway.service.treasury.TreasuryServiceConnector;
+import com.asadian.rahnema.gateway.service.treasury.jaxrs.TreasuryServiceConnector;
+import com.asadian.rahnema.gateway.service.treasury.retrofit.callback.TreasuryAccountServiceCaller;
+import com.asadian.rahnema.gateway.service.treasury.retrofit.client.TreasuryServiceClient;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import javax.ws.rs.ProcessingException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AccountService {
-
+    private static final Log LOGGER = LogFactory.getLog(AccountService.class);
     @Autowired
     private AccountRepository accountRepository;
 
@@ -34,14 +38,15 @@ public class AccountService {
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private TreasuryServiceConnector connector;
+    private GatewayProperties properties;
 
     @Autowired
-    private GatewayProperties properties;
+    private TreasuryAccountServiceCaller serviceCaller;
 
     public String register(AccountDto accountDto) throws BusinessException {
         try {
-            TreasuryResultContainer container = connector.register(getTreasuryAccount(accountDto, accountDto.getInitAmount()));
+            TreasuryResultContainer container =
+                    serviceCaller.register(getTreasuryAccount(accountDto, accountDto.getInitAmount()));
             accountRepository.save(convert(accountDto));
             return container.getMessage();
         } catch (BusinessException e) {
@@ -64,14 +69,14 @@ public class AccountService {
     }
 
     public TreasuryResultContainer login(String phoneNumber) throws BusinessException {
-        TreasuryResultContainer login = connector.login(phoneNumber);
+        TreasuryResultContainer login = serviceCaller.login(phoneNumber);
         return login;
     }
 
     public TransactionDto transfer(TransactionDto transactionDto) throws BusinessException {
         TreasuryResultContainer partOne;
         try {
-           partOne = connector.issueDocument(generatePartOneDocument(transactionDto));
+           partOne = serviceCaller.issueDocument(generatePartOneDocument(transactionDto));
         } catch (ProcessingException pe) {
             pe.printStackTrace();
             throw new BusinessException(BusinessException.TIMEOUT_FROM_SOURCE_ACCOUNT);
@@ -80,7 +85,7 @@ public class AccountService {
         transactionDto.setOtp(channelOtp);
         TreasuryResultContainer partTwo;
         try {
-           partTwo = connector.issueDocument(generatePartTwoDocument(transactionDto));
+           partTwo = serviceCaller.issueDocument(generatePartTwoDocument(transactionDto));
         } catch (ProcessingException pe) {
             pe.printStackTrace();
             reverse(((String) partOne.getData()));
@@ -131,7 +136,7 @@ public class AccountService {
     }
 
     private void reverse(String refId) throws BusinessException {
-        connector.reverseDocument(refId);
+        serviceCaller.reverseDocument(refId);
     }
 
 

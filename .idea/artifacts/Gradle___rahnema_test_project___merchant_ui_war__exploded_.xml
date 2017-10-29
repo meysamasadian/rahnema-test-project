@@ -14,7 +14,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="merchant-ui_main" />
-          <element id="dir-copy" path="$PROJECT_DIR$/merchant-ui/build/resources/main" />
+          <element id="dir-copy" path="$PROJECT_DIR$/merchant-ui/out/production/resources" />
         </element>
       </element>
     </root>

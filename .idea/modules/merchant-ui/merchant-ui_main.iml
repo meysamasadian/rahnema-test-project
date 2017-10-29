@@ -4,13 +4,13 @@
     <facet type="web" name="Web Gradle : merchant-ui.war">
       <configuration>
         <webroots>
-          <root url="file://$MODULE_DIR$/../../../merchant-ui/src/main/webapp" relative="/" />
+          <root url="file://D:\sources\test\rahnema-test-project\merchant-ui\src\main\webapp" relative="/" />
         </webroots>
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../../../merchant-ui/build/classes/main" />
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/../../../merchant-ui/out/production/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../merchant-ui/src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../../merchant-ui/src/main/java" isTestSource="false" />

@@ -1,4 +1,4 @@
-package com.asadian.rahnema.gateway.service.treasury;
+package com.asadian.rahnema.gateway.service.treasury.jaxrs;
 
 import com.asadian.rahnema.gateway.dto.treasury.TreasuryAccountDto;
 import com.asadian.rahnema.gateway.dto.treasury.TreasuryDocumentDto;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 /**
  * Created by rahnema on 9/6/2017.
  */
+@Deprecated
 @Service
 public class TreasuryServiceConnectorImpl implements TreasuryServiceConnector {
     @Override

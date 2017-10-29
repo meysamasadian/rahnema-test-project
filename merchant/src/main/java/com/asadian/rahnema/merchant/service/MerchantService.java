@@ -12,7 +12,7 @@ import com.asadian.rahnema.merchant.model.Purchase;
 import com.asadian.rahnema.merchant.model.Shop;
 import com.asadian.rahnema.merchant.repository.PurchaseRepository;
 import com.asadian.rahnema.merchant.repository.ShopRepository;
-import com.asadian.rahnema.merchant.service.gateway.GatewayServiceConnector;
+import com.asadian.rahnema.merchant.service.gateway.retrofit.callback.GatewayServiceCaller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class MerchantService {
     private ShopRepository shopRepository;
 
     @Autowired
-    private GatewayServiceConnector connector;
+    private GatewayServiceCaller serviceCaller;
 
     public List<ShopDto> shopList() {
         return shopRepository.findAll().stream().map(this::present)
@@ -66,7 +66,7 @@ public class MerchantService {
         accountDto.setFullName(dto.getName());
         accountDto.setPhone(dto.getPan());
         accountDto.setInitAmount(BigDecimal.ZERO);
-        connector.register(accountDto);
+        serviceCaller.register(accountDto);
         shopRepository.save(shop);
         return Message.SHOP_ACCOUNT_WAS_CREATED_SUCCESSFULLY;
     }
@@ -90,7 +90,7 @@ public class MerchantService {
     public Map<String,Object> processLogin(LoginDto dto) throws BusinessException {
         Map<String,Object> result = loadProductInfo(dto.getShop(), dto.getProductCode());
         result.put(PURCHASER_KEY, dto.getPurchaser());
-        result.put(OTP_KEY, connector.login(dto.getPurchaser()));
+        result.put(OTP_KEY, serviceCaller.login(dto.getPurchaser()));
         return result;
     }
 
@@ -101,7 +101,7 @@ public class MerchantService {
         transactionDto.setOtp(purchaseDto.getOtp());
         Shop.Product product = loadProduct(purchaseDto.getShopPan(), purchaseDto.getProductCode());
         transactionDto.setAmount(product.getPrice());
-        connector.transfer(transactionDto);
+        serviceCaller.transfer(transactionDto);
         Purchase purchase = new Purchase();
         purchase.setPrice(product.getPrice());
         purchase.setProduct(product.getCode());

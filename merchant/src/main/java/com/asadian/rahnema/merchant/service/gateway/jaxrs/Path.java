@@ -1,13 +1,14 @@
-package com.asadian.rahnema.gateway.service.treasury;
+package com.asadian.rahnema.merchant.service.gateway.jaxrs;
 
 /**
  * Created by rahnema on 9/6/2017.
  */
+@Deprecated
 public enum Path {
-    REGISTER_ACCOUNT("/account/register"),
+    REGISTER("/account/register/"),
     LOGIN("/account/login/"),
-    ISSUE_DOCUMENT("/document/issue/"),
-    REVERSE_DOCUMENT("/document/reverse/"),;
+    TRANSFER("/account/transfer/"),
+    LIST("/account/list/"),;
 
     private String path;
 

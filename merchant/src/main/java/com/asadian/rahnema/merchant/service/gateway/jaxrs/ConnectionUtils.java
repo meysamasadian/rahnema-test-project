@@ -1,4 +1,4 @@
-package com.asadian.rahnema.merchant.service.gateway;
+package com.asadian.rahnema.merchant.service.gateway.jaxrs;
 
 
 import com.asadian.rahnema.merchant.dto.gateway.GatewayResultContainer;
@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
  */
 
 @SuppressWarnings("Duplicates")
+@Deprecated
 public class ConnectionUtils {
 
 

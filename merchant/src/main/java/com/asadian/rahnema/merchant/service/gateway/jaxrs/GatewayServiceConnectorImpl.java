@@ -1,4 +1,4 @@
-package com.asadian.rahnema.merchant.service.gateway;
+package com.asadian.rahnema.merchant.service.gateway.jaxrs;
 
 
 import com.asadian.rahnema.merchant.dto.gateway.GatewayAccountDto;
@@ -7,11 +7,10 @@ import com.asadian.rahnema.merchant.dto.gateway.GatewayTransactionDto;
 import com.asadian.rahnema.merchant.exception.BusinessException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * Created by rahnema on 9/6/2017.
  */
+@Deprecated
 @Service
 public class GatewayServiceConnectorImpl implements GatewayServiceConnector {
 

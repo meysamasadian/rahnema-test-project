@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../../merchant-ui">
       <excludeFolder url="file://$MODULE_DIR$/../../../merchant-ui/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../merchant-ui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../merchant-ui/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

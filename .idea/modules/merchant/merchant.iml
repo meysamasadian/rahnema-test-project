@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../../merchant">
       <excludeFolder url="file://$MODULE_DIR$/../../../merchant/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../merchant/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../merchant/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

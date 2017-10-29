@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../../gateway">
       <excludeFolder url="file://$MODULE_DIR$/../../../gateway/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../gateway/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../gateway/out" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

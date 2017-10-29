@@ -1,4 +1,4 @@
-package com.asadian.rahnema.gateway.service.treasury;
+package com.asadian.rahnema.gateway.service.treasury.jaxrs;
 
 import com.asadian.rahnema.gateway.dto.treasury.TreasuryResultContainer;
 import com.asadian.rahnema.gateway.exception.BusinessException;
@@ -10,14 +10,11 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Properties;
 
 /**
  * Created by rahnema on 9/6/2017.
  */
-
+@Deprecated
 public class ConnectionUtils {
 
 
