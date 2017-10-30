@@ -31,31 +31,21 @@ public class DocumentController {
 
     @RequestMapping(value = "/issue", method = RequestMethod.POST)
     @ResponseBody
-    public Object issueDocument(@RequestBody DocumentDto documentDto) {
-        try {
-            AccountDto source = accountService.load(documentDto.getSource());
-            accountService.validate(accountService.convert(source), documentDto.getOtp());
-            String refId = documentService.issueDocument(documentDto);
-            String message = MessageFactory.message(DocumentMessage.DOCUMENT_GENERATED,
-                    String.valueOf(documentDto.getAmount()),
-                    documentDto.getSource(), documentDto.getDest());
-            return TreasuryResultFactory.getResult(refId, message);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(TreasuryResultFactory.getResult("", e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
-        }
+    public Object issueDocument(@RequestBody DocumentDto documentDto) throws BusinessException {
+        AccountDto source = accountService.load(documentDto.getSource());
+        accountService.validate(accountService.convert(source), documentDto.getOtp());
+        String refId = documentService.issueDocument(documentDto);
+        String message = MessageFactory.message(DocumentMessage.DOCUMENT_GENERATED,
+                String.valueOf(documentDto.getAmount()),
+                documentDto.getSource(), documentDto.getDest());
+        return TreasuryResultFactory.getResult(refId, message);
     }
 
     @RequestMapping(value = "/reverse/{refId}", method = RequestMethod.POST)
     @ResponseBody
-    public Object reverseLastDocument(@PathVariable String refId) {
-        try {
-            String reverseRefId = documentService.reverseDocument(refId);
-            String message = MessageFactory.message(DocumentMessage.DOCUMENT_REVERSED, refId);
-            return TreasuryResultFactory.getResult(reverseRefId, message);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(TreasuryResultFactory.getResult("", e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
-        }
+    public Object reverseLastDocument(@PathVariable String refId) throws BusinessException {
+        String reverseRefId = documentService.reverseDocument(refId);
+        String message = MessageFactory.message(DocumentMessage.DOCUMENT_REVERSED, refId);
+        return TreasuryResultFactory.getResult(reverseRefId, message);
     }
 }

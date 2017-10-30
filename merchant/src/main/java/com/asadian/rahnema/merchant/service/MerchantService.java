@@ -96,7 +96,7 @@ public class MerchantService {
 
     public String purchase(PurchaseDto purchaseDto) throws BusinessException {
         GatewayTransactionDto transactionDto = new GatewayTransactionDto();
-        transactionDto.setSource(purchaseDto.getPurchaserPan());
+    //    transactionDto.setSource(purchaseDto.getPurchaserPan());
         transactionDto.setDest(purchaseDto.getShopPan());
         transactionDto.setOtp(purchaseDto.getOtp());
         Shop.Product product = loadProduct(purchaseDto.getShopPan(), purchaseDto.getProductCode());

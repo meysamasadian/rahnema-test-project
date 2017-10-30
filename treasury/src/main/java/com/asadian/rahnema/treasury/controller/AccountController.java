@@ -23,37 +23,22 @@ public class AccountController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST )
     @ResponseBody
-    public Object register(@RequestBody AccountDto accountDto) {
-        try {
+    public Object register(@RequestBody AccountDto accountDto) throws BusinessException {
             AccountDto dto = accountService.register(accountDto);
             return TreasuryResultFactory.getResult(dto, AccountMessage.ACCOUNT_WAS_CREATED);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(TreasuryResultFactory.getResult(accountDto, e.getMessage()),HttpStatus.ALREADY_REPORTED);
-        }
     }
 
     @RequestMapping(value = "/login/{pan}", method = RequestMethod.POST )
     @ResponseBody
-    public Object login(@PathVariable String pan) {
-        try {
-            return TreasuryResultFactory.getResult(accountService.login(pan), AccountMessage.OTP_WAS_GENERATED);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(TreasuryResultFactory.getResult("", e.getMessage()), HttpStatus.NOT_FOUND);
-        }
+    public Object login(@PathVariable String pan) throws BusinessException {
+        return TreasuryResultFactory.getResult(accountService.login(pan), AccountMessage.OTP_WAS_GENERATED);
     }
 
 
     @RequestMapping(value = "/balance/{pan}", method = RequestMethod.GET )
     @ResponseBody
-    public Object balance(@PathVariable String pan) {
-        try {
-            return TreasuryResultFactory.getResult(accountService.load(pan), AccountMessage.SUCCESSFULLY_OPERATION);
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(TreasuryResultFactory.getResult("", e.getMessage()), HttpStatus.NOT_FOUND);
-        }
+    public Object balance(@PathVariable String pan) throws BusinessException {
+        return TreasuryResultFactory.getResult(accountService.load(pan), AccountMessage.SUCCESSFULLY_OPERATION);
     }
 
 }
