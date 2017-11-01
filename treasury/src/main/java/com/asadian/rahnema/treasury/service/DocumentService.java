@@ -19,14 +19,18 @@ import java.util.Date;
 @Service
 public class DocumentService {
 
-    @Autowired
     private AccountService accountService;
 
-    @Autowired
     private DocumentRepo documentRepo;
 
-    @Autowired
     private AccountRepo accountRepo;
+
+    @Autowired
+    public DocumentService(AccountService accountService, DocumentRepo documentRepo, AccountRepo accountRepo) {
+        this.accountService = accountService;
+        this.documentRepo = documentRepo;
+        this.accountRepo = accountRepo;
+    }
 
     public String issueDocument(DocumentDto dto) throws BusinessException {
         Account source = accountRepo.findByPan(dto.getSource());

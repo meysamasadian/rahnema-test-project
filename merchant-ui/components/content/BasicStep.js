@@ -27,7 +27,7 @@ export default class BasicStep extends Component {
 
     async componentDidMount() {
         let that = this;
-        let url = "http://localhost:4030/api/shops/";
+        let url = "http://localhost:4030/controller/shops/";
         axios.get(url)
             .then(function(response){
                 console.log("res" ,response);

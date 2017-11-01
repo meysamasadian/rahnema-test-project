@@ -12,6 +12,7 @@ import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,14 +20,19 @@ import java.util.Random;
  */
 @Service
 public class AccountService {
-    @Autowired
+
     private AccountRepo accountRepo;
 
-    @Autowired
     private Cache otpCache;
 
-    @Autowired
     private OtpProperties properties;
+
+    @Autowired
+    public AccountService(AccountRepo accountRepo, Cache otpCache, OtpProperties properties) {
+        this.accountRepo = accountRepo;
+        this.otpCache = otpCache;
+        this.properties = properties;
+    }
 
     public void validate(Account account, String otp) throws BusinessException {
         Cache.ValueWrapper wrapper = otpCache.get(account.getPan());
@@ -90,13 +96,22 @@ public class AccountService {
     }
 
 
-    public void increaseBalance(AccountDto dto, BigDecimal amount) {
+    public void drop(String pan) throws BusinessException {
+        Account account;
+        if ((account = accountRepo.findByPan(pan)) != null) {
+            accountRepo.delete(account);
+        }
+        throw new BusinessException(MessageFactory.message(BusinessException.ACCOUNT_NOT_FOUND, pan));
+    }
+
+
+    void increaseBalance(AccountDto dto, BigDecimal amount) {
         Account account = accountRepo.findByPan(dto.getPan());
         account.setBalance(account.getBalance().add(amount));
         accountRepo.save(account);
     }
 
-    public void decreaseBalance(AccountDto dto, BigDecimal amount) {
+    void decreaseBalance(AccountDto dto, BigDecimal amount) {
         Account account = accountRepo.findByPan(dto.getPan());
         account.setBalance(account.getBalance().subtract(amount));
         accountRepo.save(account);
@@ -110,7 +125,7 @@ public class AccountService {
         return account;
     }
 
-    public AccountDto present(Account account) {
+    AccountDto present(Account account) {
         AccountDto accountDto = new AccountDto();
         accountDto.setPan(account.getPan());
         accountDto.setBalance(account.getBalance());

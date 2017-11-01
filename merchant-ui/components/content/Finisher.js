@@ -38,7 +38,7 @@ export default class Finisher extends Component {
             purchaser,
             otp
         } = this.props;
-        let url = "http://localhost:4030/api/shops/purchase/";
+        let url = "http://localhost:4030/controller/shops/purchase/";
         let data = {"shopPan":shop,"productCode":product,"purchaserPan":purchaser,"otp":otp};
         axios.post(url,data)
             .then(function(response){

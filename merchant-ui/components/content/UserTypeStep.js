@@ -31,7 +31,7 @@ export default class UserTypeStep extends Component {
             product,
             purchaser
         } = this.props;
-        let url = "http://localhost:4030/api/shops/login/";
+        let url = "http://localhost:4030/controller/shops/login/";
         let data = {"shop":shop,"productCode":product,"purchaser":purchaser};
         axios.post(url,data)
             .then(function(response){

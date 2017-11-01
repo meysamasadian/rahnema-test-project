@@ -23,6 +23,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile group: 'org.springframework', name: 'spring-context-support', version: '4.1.0.RELEASE'
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path-assert', version: '0.8.1'
 }
 
 dependencyManagement {

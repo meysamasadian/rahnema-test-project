@@ -29,7 +29,7 @@ export default class VerificationStep extends Component {
 
     async componentDidMount() {
         let that = this;
-        let url = "http://localhost:4030/api/shops/products/"+this.props.shop;
+        let url = "http://localhost:4030/controller/shops/products/"+this.props.shop;
         axios.get(url)
             .then(function(response){
                 console.log("res" ,response);
