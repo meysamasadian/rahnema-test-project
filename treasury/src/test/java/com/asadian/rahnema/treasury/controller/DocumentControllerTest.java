@@ -1,8 +1,11 @@
 package com.asadian.rahnema.treasury.controller;
 
 import com.asadian.rahnema.treasury.dto.AccountDto;
+import com.asadian.rahnema.treasury.dto.DocumentDto;
 import com.asadian.rahnema.treasury.model.Account;
 import com.asadian.rahnema.treasury.repositories.AccountRepo;
+import com.asadian.rahnema.treasury.repositories.DocumentRepo;
+import com.asadian.rahnema.treasury.service.AccountService;
 import com.google.gson.Gson;
 import org.junit.After;
 import org.junit.Before;
@@ -26,17 +29,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AccountControllerTest {
+public class DocumentControllerTest {
     private static final Gson GSON = new Gson();
+
     @Autowired
     WebApplicationContext context;
 
     @Autowired
     private AccountRepo accountRepo;
 
-    private Account mockAccountLogin;
+    @Autowired
+    private DocumentRepo documentRepo;
 
-    private AccountDto mockAccountRegister;
+    @Autowired
+    private AccountService accountService;
+
+    private Account mockSourceAccount;
+
+    private Account mockDestinationAccount;
 
     private MockMvc mvc;
 
@@ -48,37 +58,38 @@ public class AccountControllerTest {
     }
 
     private void createMockData() {
-        mockAccountLogin = new Account();
-        mockAccountLogin.setBalance(BigDecimal.ZERO);
-        mockAccountLogin.setPan("123456789");
-        accountRepo.save(mockAccountLogin);
+        mockSourceAccount = new Account();
+        mockSourceAccount.setBalance(new BigDecimal(200));
+        mockSourceAccount.setPan("123456789");
+        accountRepo.save(mockSourceAccount);
 
-        mockAccountRegister = new AccountDto();
-        mockAccountRegister.setPan("987654321");
-        mockAccountRegister.setBalance(new BigDecimal(200));
+        mockDestinationAccount = new Account();
+        mockDestinationAccount.setBalance(BigDecimal.ZERO);
+        mockDestinationAccount.setPan("987654321");
+        accountRepo.save(mockDestinationAccount);
     }
 
     @Test
-    public void registerTest() throws Exception {
-        String json = GSON.toJson(mockAccountRegister);
-        this.mvc.perform(post("/account/register")
+    public void testIssuance() throws Exception {
+        String otp = accountService.login(mockSourceAccount.getPan());
+
+        DocumentDto documentDto = new DocumentDto();
+        documentDto.setSource(mockSourceAccount.getPan());
+        documentDto.setDest(mockDestinationAccount.getPan());
+        documentDto.setAmount(mockSourceAccount.getBalance());
+        documentDto.setOtp(otp);
+
+        mvc.perform(post("/document/issue")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(json)
+                .content(GSON.toJson(documentDto))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", notNullValue()));
-    }
-
-    @Test
-    public void loginTest() throws Exception {
-        this.mvc.perform(post("/account/login/".concat(mockAccountLogin.getPan()))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data", notNullValue()));
+                .andExpect(jsonPath("$.refId", notNullValue()));
     }
 
     @After
     public void cleanup() {
         accountRepo.deleteAll();
+        documentRepo.deleteAll();
     }
 }
