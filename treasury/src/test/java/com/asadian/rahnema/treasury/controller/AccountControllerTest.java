@@ -61,7 +61,7 @@ public class AccountControllerTest {
     @Test
     public void registerTest() throws Exception {
         String json = GSON.toJson(mockAccountRegister);
-        this.mvc.perform(post("/account/register")
+        this.mvc.perform(post("/api/account/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
@@ -71,7 +71,7 @@ public class AccountControllerTest {
 
     @Test
     public void loginTest() throws Exception {
-        this.mvc.perform(post("/account/login/".concat(mockAccountLogin.getPan()))
+        this.mvc.perform(post("/api/account/login/".concat(mockAccountLogin.getPan()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", notNullValue()));

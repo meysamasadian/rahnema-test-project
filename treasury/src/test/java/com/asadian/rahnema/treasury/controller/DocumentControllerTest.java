@@ -79,12 +79,12 @@ public class DocumentControllerTest {
         documentDto.setAmount(mockSourceAccount.getBalance());
         documentDto.setOtp(otp);
 
-        mvc.perform(post("/document/issue")
+        mvc.perform(post("/api/document/issue")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(GSON.toJson(documentDto))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.refId", notNullValue()));
+                .andExpect(jsonPath("$.data", notNullValue()));
     }
 
     @After
