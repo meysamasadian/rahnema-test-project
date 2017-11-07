@@ -50,7 +50,7 @@ public class AccountService {
             accountRepository.save(convert(accountDto));
             return container.getMessage();
         } catch (BusinessException e) {
-            e.printStackTrace();
+            LOGGER.warn(e);
             throw new BusinessException(e.getMessage());
         }
     }
@@ -78,7 +78,7 @@ public class AccountService {
         try {
            partOne = serviceCaller.issueDocument(generatePartOneDocument(transactionDto));
         } catch (ProcessingException pe) {
-            pe.printStackTrace();
+            LOGGER.warn(pe);
             throw new BusinessException(BusinessException.TIMEOUT_FROM_SOURCE_ACCOUNT);
         }
         String channelOtp = (String) login(properties.getPan()).getData();
@@ -87,7 +87,7 @@ public class AccountService {
         try {
            partTwo = serviceCaller.issueDocument(generatePartTwoDocument(transactionDto));
         } catch (ProcessingException pe) {
-            pe.printStackTrace();
+            LOGGER.warn(pe);
             reverse(((String) partOne.getData()));
             throw new BusinessException(BusinessException.TIMEOUT_FROM_TARGET_ACCOUNT);
         } catch (BusinessException bx) {
